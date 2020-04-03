@@ -35,6 +35,7 @@ func Upload(uploadData []byte, url string, authorizationtoken string, key []byte
 	fmt.Println("response Headers:", resp.Header)
 	body, _ := ioutil.ReadAll(resp.Body)
 	fmt.Println("response Body:", string(body))
+	return nil
 }
 
 func Encrypt(key []byte, message string) (encmess string, err error) {
