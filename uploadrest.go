@@ -13,9 +13,12 @@ import (
 	"net/http"
 )
 
-func Upload(uploadData []byte, url string, authorizationtoken string, key []byte) {
+func Upload(uploadData []byte, url string, authorizationtoken string, key []byte) error {
 
 	encmess, err := Encrypt(key, string(uploadData))
+	if err != nil {
+		fmt.Println(err)
+	}
 
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer([]byte(encmess)))
 	req.Header.Set("Content-Type", "application/file")
@@ -24,7 +27,7 @@ func Upload(uploadData []byte, url string, authorizationtoken string, key []byte
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
-		panic(err)
+		fmt.Println(err)
 	}
 	defer resp.Body.Close()
 
