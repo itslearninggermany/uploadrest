@@ -13,6 +13,25 @@ import (
 	"net/http"
 )
 
+func UploadUnencrypted(uploadData []byte, url string, authorizationtoken string) error {
+	req, err := http.NewRequest("POST", url, bytes.NewBuffer(uploadData))
+	req.Header.Set("Content-Type", "application/file")
+	req.Header.Set("Authorization", authorizationtoken)
+
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		fmt.Println(err)
+	}
+	defer resp.Body.Close()
+
+	fmt.Println("response Status:", resp.Status)
+	fmt.Println("response Headers:", resp.Header)
+	body, _ := ioutil.ReadAll(resp.Body)
+	fmt.Println("response Body:", string(body))
+	return nil
+}
+
 func Upload(uploadData []byte, url string, authorizationtoken string, key []byte) error {
 
 	encmess, err := Encrypt(key, string(uploadData))
