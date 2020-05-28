@@ -17,7 +17,6 @@ func GetUniventionRestSetup(uuid string, db *gorm.DB) (setup UniventionRestSetup
 	return setup, err
 }
 
-func (p *UniventionRestSetup) Initial(AESKey string, authKey string) {
+func (p *UniventionRestSetup) Initial(AESKey string) {
 	p.AESkey = AESKey
-	p.AuthKey = authKey
 }
