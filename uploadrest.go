@@ -5,6 +5,7 @@ import (
 	"crypto/aes"
 	"crypto/cipher"
 	"crypto/rand"
+	"crypto/tls"
 	"encoding/base64"
 	"errors"
 	"fmt"
@@ -18,7 +19,11 @@ func UploadUnencrypted(uploadData []byte, url string, authorizationtoken string)
 	req.Header.Set("Content-Type", "application/file")
 	req.Header.Set("Authorization", authorizationtoken)
 
-	client := &http.Client{}
+	tr := &http.Transport{
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+	}
+	client := &http.Client{Transport: tr}
+
 	resp, err := client.Do(req)
 	if err != nil {
 		fmt.Println(err)
