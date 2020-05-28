@@ -14,7 +14,7 @@ import (
 	"net/http"
 )
 
-func UploadUnencrypted(uploadData []byte, url string, authorizationtoken string) error {
+func UploadUnencrypted(uploadData []byte, url string, authorizationtoken string) (status string, header string, body []byte, err error) {
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(uploadData))
 	req.Header.Set("Content-Type", "application/file")
 	req.Header.Set("Authorization", authorizationtoken)
@@ -30,11 +30,10 @@ func UploadUnencrypted(uploadData []byte, url string, authorizationtoken string)
 	}
 	defer resp.Body.Close()
 
-	fmt.Println("response Status:", resp.Status)
-	fmt.Println("response Headers:", resp.Header)
-	body, _ := ioutil.ReadAll(resp.Body)
-	fmt.Println("response Body:", string(body))
-	return nil
+	status = resp.Status
+	header = fmt.Sprint(resp.Header)
+	body, _ = ioutil.ReadAll(resp.Body)
+	return status, header, body, nil
 }
 
 func Upload(uploadData []byte, url string, authorizationtoken string, key []byte) error {
