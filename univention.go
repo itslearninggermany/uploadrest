@@ -23,6 +23,6 @@ func (p *UniventionRestSetup) Initial(AESKey string) *UniventionRestSetup {
 }
 
 func (p *UniventionRestSetup) Save(db gorm.DB) error {
-	err := db.Save(p)
+	err := db.Save(p).Error
 	return err
 }
